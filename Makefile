@@ -69,6 +69,7 @@ LDFLAGS := \
 	-T$(LDDESC)
 
 # BUILD PREPARATION
+ASM := $(OUTDIR)/$(TARGET).asm
 HEX := $(OUTDIR)/$(TARGET).hex
 BIN := $(OUTDIR)/$(TARGET).bin
 MAP := $(OUTDIR)/$(TARGET).map
@@ -85,9 +86,12 @@ BADDEPS := $(filter-out $(DEPENDS),$(wildcard $(OUTDIR)/$(DEPDIR)/*))
 # BUILD RULES
 .PHONY: all clean
 
-all: $(MAP) $(HEX) $(BIN)
+all: $(MAP) $(HEX) $(BIN) $(ASM)
 	@rm -f $(BADOBJS) $(BADDEPS)
 	arm-none-eabi-size $(OUT)
+
+$(ASM): $(OUT)
+	arm-none-eabi-objdump -dCSw -marm -Mforce-thumb $< > $@
 
 $(BIN): $(OUT)
 	arm-none-eabi-objcopy -O binary $< $@
