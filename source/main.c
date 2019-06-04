@@ -19,19 +19,22 @@
                          MSK( GPIO_PIN_CNF_DRIVE_H0S1,       GPIO_PIN_CNF_DRIVE_Pos ))
 
 int main(void) {
-    NRF_P0->OUT = 0;
+    NRF_P0->OUT = LED1 | LED2;
     NRF_P0->PIN_CNF[LED1_PIN] = LED_PIN_CNF;
     NRF_P0->PIN_CNF[LED2_PIN] = LED_PIN_CNF;
     NRF_P0->PIN_CNF[LED3_PIN] = LED_PIN_CNF;
     NRF_P0->PIN_CNF[LED4_PIN] = LED_PIN_CNF;
     NRF_P0->DIRSET = LED_ALL;
 
-    while (1) {
-        for (volatile uint32_t i = 0; i < 3000000; i++);
+    for (volatile uint32_t i = 0; i < 3000000; i++);
 
-        if (NRF_P0->OUT & LED_ALL)
-            NRF_P0->OUTCLR = LED_ALL;
-        else
-            NRF_P0->OUTSET = LED_ALL;
-    }
+    NRF_P0->OUT = LED3 | LED4;
+    SCB->SCR = SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk;
+
+    for (volatile uint32_t i = 0; i < 3000000; i++);
+
+    if (SCB->SCR & SCB_SCR_SLEEPDEEP_Msk)
+        NRF_P0->OUTCLR = LED3;
+    if (SCB->SCR & SCB_SCR_SLEEPONEXIT_Msk)
+        NRF_P0->OUTCLR = LED4;
 }
