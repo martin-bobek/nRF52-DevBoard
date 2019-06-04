@@ -15,7 +15,14 @@ int main(void) {
     for (uint8_t i = 0; i < 4; i++, LedsToggle = 0)
         while (!LedsToggle);
 
-    // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
+    if (NRF_UICR->PSELRESET[0] == 21)
+        NRF_P0->OUTCLR = LED1;
+    if (NRF_UICR->PSELRESET[0] == 21)
+        NRF_P0->OUTCLR = LED2;
+    if (NRF_UICR->APPROTECT == ~0)
+        NRF_P0->OUTCLR = LED3;
+    if (NRF_UICR->NFCPINS == ~1)
+        NRF_P0->OUTCLR = LED4;
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
