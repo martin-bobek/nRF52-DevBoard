@@ -18,6 +18,8 @@
 #define LED_PIN_CNF     (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos ) | \
                          MSK( GPIO_PIN_CNF_DRIVE_H0S1,       GPIO_PIN_CNF_DRIVE_Pos ))
 
+#define SYSTICK_250MS   (16000000u - 1u)
+
 int main(void) {
     NRF_P0->OUT = 0;
     NRF_P0->PIN_CNF[LED1_PIN] = LED_PIN_CNF;
@@ -26,12 +28,18 @@ int main(void) {
     NRF_P0->PIN_CNF[LED4_PIN] = LED_PIN_CNF;
     NRF_P0->DIRSET = LED_ALL;
 
-    while (1) {
-        for (volatile uint32_t i = 0; i < 3000000; i++);
+    SysTick->LOAD = SYSTICK_250MS;
+    SysTick->VAL = 0;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
 
-        if (NRF_P0->OUT & LED_ALL)
-            NRF_P0->OUTCLR = LED_ALL;
-        else
-            NRF_P0->OUTSET = LED_ALL;
+    while (1) {
+        for (volatile uint32_t i = 0; i < 300000; i++);
+
+        if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
+            if (NRF_P0->OUT & LED_ALL)
+                NRF_P0->OUTCLR = LED_ALL;
+            else
+                NRF_P0->OUTSET = LED_ALL;
+        }
     }
 }
