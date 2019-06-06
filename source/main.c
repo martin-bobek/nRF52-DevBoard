@@ -20,6 +20,8 @@
 
 #define SYSTICK_250MS   (16000000u - 1u)
 
+static volatile uint8_t LedsOn = 1;
+
 int main(void) {
     NRF_P0->OUT = 0;
     NRF_P0->PIN_CNF[LED1_PIN] = LED_PIN_CNF;
@@ -30,16 +32,19 @@ int main(void) {
 
     SysTick->LOAD = SYSTICK_250MS;
     SysTick->VAL = 0;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
 
+    __enable_irq();
     while (1) {
         for (volatile uint32_t i = 0; i < 300000; i++);
 
-        if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
-            if (NRF_P0->OUT & LED_ALL)
-                NRF_P0->OUTCLR = LED_ALL;
-            else
-                NRF_P0->OUTSET = LED_ALL;
-        }
+        if (LedsOn)
+            NRF_P0->OUTCLR = LED_ALL;
+        else
+            NRF_P0->OUTSET = LED_ALL;
     }
+}
+
+void __attribute((interrupt)) SysTick_Handler(void) {
+    LedsOn = !LedsOn;
 }
