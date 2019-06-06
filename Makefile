@@ -91,7 +91,7 @@ all: $(MAP) $(HEX) $(BIN) $(ASM)
 	arm-none-eabi-size $(OUT)
 
 $(ASM): $(OUT)
-	arm-none-eabi-objdump -dCSw -marm -Mforce-thumb $< > $@
+	arm-none-eabi-objdump -dCSwz -marm -Mforce-thumb $< > $@
 
 $(BIN): $(OUT)
 	arm-none-eabi-objcopy -O binary $< $@
