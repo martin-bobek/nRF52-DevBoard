@@ -20,7 +20,7 @@
 
 #define SYSTICK_250MS   (16000000u - 1u)
 
-static volatile uint8_t LedsOn = 1;
+static volatile uint8_t LedsToggle = 0;
 
 int main(void) {
     NRF_P0->OUT = 0;
@@ -36,15 +36,16 @@ int main(void) {
 
     __enable_irq();
     while (1) {
-        if (LedsOn)
+        if (NRF_P0->OUT & LED_ALL)
             NRF_P0->OUTCLR = LED_ALL;
         else
             NRF_P0->OUTSET = LED_ALL;
 
-        for (volatile uint32_t i = 0; i < 300000; i++);
+        while (!LedsToggle);
+        LedsToggle = 0;
     }
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
-    LedsOn = !LedsOn;
+    LedsToggle = 1;
 }
