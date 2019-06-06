@@ -36,12 +36,12 @@ int main(void) {
 
     __enable_irq();
     while (1) {
-        for (volatile uint32_t i = 0; i < 300000; i++);
-
         if (LedsOn)
             NRF_P0->OUTCLR = LED_ALL;
         else
             NRF_P0->OUTSET = LED_ALL;
+
+        for (volatile uint32_t i = 0; i < 300000; i++);
     }
 }
 
