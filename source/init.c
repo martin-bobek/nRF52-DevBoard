@@ -13,6 +13,7 @@
                          MSK( GPIO_PIN_CNF_PULL_Pulldown,    GPIO_PIN_CNF_PULL_Pos  ))
 #define LED_PIN_CNF     (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos ) | \
                          MSK( GPIO_PIN_CNF_DRIVE_H0S1,       GPIO_PIN_CNF_DRIVE_Pos ))
+#define DCDC_ENABLED     MSK( POWER_DCDCEN_DCDCEN_Enabled,   POWER_DCDCEN_DCDCEN_Pos )
 
 #define SYSTICK_250MS   (16000000u - 1u)
 
@@ -27,6 +28,8 @@ const uint32_t GPIO_CNF[32] = {
         INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN };
 
 void Init(void) {
+    NRF_POWER->DCDCEN = DCDC_ENABLED;
+
     ERRATA108_DST = ERRATA108_SRC & ERRATA108_MSK;
 
     for (uint8_t pin = 0; pin < 32; pin++)
