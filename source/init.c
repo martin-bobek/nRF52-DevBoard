@@ -1,6 +1,12 @@
 #include <nrf.h>
 #include "init.h"
 
+#define REG(ADDR)       (*(volatile uint32_t *)ADDR)
+
+#define ERRATA108_DST   REG(0x40000EE4)
+#define ERRATA108_SRC   REG(0x10000258)
+#define ERRATA108_MSK   0x0000004F
+
 #define INDSC_PLUP      (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos ) | \
                          MSK( GPIO_PIN_CNF_PULL_Pullup,      GPIO_PIN_CNF_PULL_Pos  ))
 #define INDSC_PLDWN     (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos ) | \
@@ -21,6 +27,8 @@ const uint32_t GPIO_CNF[32] = {
         INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN };
 
 void Init(void) {
+    ERRATA108_DST = ERRATA108_SRC & ERRATA108_MSK;
+
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
 
