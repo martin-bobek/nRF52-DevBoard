@@ -1,6 +1,8 @@
 #include <nrf.h>
 #include "init.h"
 
+static inline void Sleep(void) __attribute((always_inline));
+
 static volatile uint8_t LedsToggle = 0;
 
 int main(void) {
@@ -13,9 +15,14 @@ int main(void) {
         else
             NRF_P0->OUTSET = LED_ALL;
 
-        while (!LedsToggle);
-        LedsToggle = 0;
+        Sleep();
     }
+}
+
+void Sleep(void) {
+    while (!LedsToggle);
+
+    LedsToggle = 0;
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
