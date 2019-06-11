@@ -15,7 +15,14 @@ int main(void) {
     for (uint8_t i = 0; i < 4; i++, LedsToggle = 0)
         while (!LedsToggle);
 
-    // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
+
+    if (SysTick->CTRL & SysTick_CTRL_CLKSOURCE_Msk)
+        NRF_P0->OUTCLR = LED1;
+
+    SysTick->CTRL = 0;
+
+    if (SysTick->CTRL & SysTick_CTRL_CLKSOURCE_Msk)
+        NRF_P0->OUTCLR = LED2;
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
