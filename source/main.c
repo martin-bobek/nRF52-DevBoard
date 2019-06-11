@@ -5,17 +5,17 @@ static volatile uint8_t LedsToggle = 0;
 
 int main(void) {
     Init();
-
     __enable_irq();
-    while (1) {
-        if (NRF_P0->OUT & LED_ALL)
-            NRF_P0->OUTCLR = LED_ALL;
-        else
-            NRF_P0->OUTSET = LED_ALL;
 
+    for (uint8_t i = 0; i < 4; i++, LedsToggle = 0)
         while (!LedsToggle);
-        LedsToggle = 0;
-    }
+
+    NRF_P0->OUTSET = LED_ALL;
+
+    for (uint8_t i = 0; i < 4; i++, LedsToggle = 0)
+        while (!LedsToggle);
+
+    // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
