@@ -25,6 +25,7 @@ void Sleep(void) {
     LedsToggle = 0;
 }
 
-void __attribute((interrupt)) SysTick_Handler(void) {
+void __attribute((interrupt)) RTC0_IRQHandler(void) {
+    NRF_RTC0->EVENTS_TICK = 0;
     LedsToggle = 1;
 }

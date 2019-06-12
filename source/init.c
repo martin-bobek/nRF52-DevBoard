@@ -17,7 +17,7 @@
 #define DCDC_ENABLED     MSK( POWER_DCDCEN_DCDCEN_Enabled,   POWER_DCDCEN_DCDCEN_Pos )
 #define CLKSRC_XTAL      MSK( CLOCK_LFCLKSRC_SRC_Xtal,   CLOCK_LFCLKSRC_SRC_Pos )
 
-#define SYSTICK_250MS   (16000000u - 1u)
+#define RTC_PRESCALER   4095u
 
 const uint32_t GPIO_CNF[32] = {
 //      P0.00 XL1    P0.01 XL2    P0.02        P0.03        P0.04        P0.05 CTS    P0.06 RxD    P0.07 RTS
@@ -43,7 +43,9 @@ void Init(void) {
     NRF_CLOCK->LFCLKSRC = CLKSRC_XTAL;
     NRF_CLOCK->TASKS_LFCLKSTART = 1;
 
-    SysTick->LOAD = SYSTICK_250MS;
-    SysTick->VAL = 0;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
+    NRF_RTC0->PRESCALER = RTC_PRESCALER;
+    NRF_RTC0->INTENSET = RTC_INTENSET_TICK_Msk;
+    NRF_RTC0->TASKS_START = 1;
+
+    NVIC->ISER[0] = BIT(RTC0_IRQn);
 }
