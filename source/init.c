@@ -43,6 +43,13 @@ void Init(void) {
     NRF_CLOCK->LFCLKSRC = CLKSRC_XTAL;
     NRF_CLOCK->TASKS_LFCLKSTART = 1;
 
+    while (NRF_CLOCK->LFCLKSRC != CLKSRC_XTAL);
+    while (!NRF_CLOCK->LFCLKRUN);
+    while (!NRF_CLOCK->EVENTS_LFCLKSTARTED);
+    while (NRF_CLOCK->LFCLKSTAT !=
+            (MSK( CLOCK_LFCLKSTAT_STATE_Running, CLOCK_LFCLKSTAT_STATE_Pos ) |
+             MSK( CLOCK_LFCLKSTAT_SRC_Xtal, CLOCK_LFCLKSTAT_SRC_Pos )));
+
     SysTick->LOAD = SYSTICK_250MS;
     SysTick->VAL = 0;
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
