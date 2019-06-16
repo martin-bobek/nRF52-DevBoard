@@ -15,7 +15,8 @@ int main(void) {
     for (uint8_t i = 0; i < 4; i++, LedsToggle = 0)
         while (!LedsToggle);
 
-    // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
+    if (SCnSCB->ICTR == 1)      // Up to 64 interrupt lines are supported.
+        NRF_P0->OUTCLR = LED_ALL;
 }
 
 void __attribute((interrupt)) SysTick_Handler(void) {
