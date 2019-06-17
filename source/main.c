@@ -3,8 +3,6 @@
 
 static inline void Sleep(void) __attribute((always_inline));
 
-static volatile uint8_t LedsToggle = 0;
-
 int main(void) {
     Init();
 
@@ -20,18 +18,19 @@ int main(void) {
 }
 
 void Sleep(void) {
+    static uint32_t expectedTick = 0;
+
+    expectedTick = (expectedTick + 1) & RTC_COUNTER_COUNTER_Msk;
     __disable_irq();
-    while (!LedsToggle) {
+    while (NRF_RTC0->COUNTER != expectedTick) {
         __WFI();
         __enable_irq();
         __disable_irq();
     }
 
-    LedsToggle = 0;
     __enable_irq();
 }
 
 void __attribute((interrupt)) RTC0_IRQHandler(void) {
     NRF_RTC0->EVENTS_TICK = 0;
-    LedsToggle = 1;
 }
