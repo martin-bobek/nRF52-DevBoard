@@ -20,9 +20,15 @@ int main(void) {
 }
 
 void Sleep(void) {
-    while (!LedsToggle);
+    __disable_irq();
+    while (!LedsToggle) {
+        __WFI();
+        __enable_irq();
+        __disable_irq();
+    }
 
     LedsToggle = 0;
+    __enable_irq();
 }
 
 void __attribute((interrupt)) RTC0_IRQHandler(void) {
