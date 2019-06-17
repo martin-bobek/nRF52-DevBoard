@@ -37,7 +37,7 @@ void Init(void) {
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
 
-    NRF_P0->OUT = 0;
+    NRF_P0->OUT = LED_ALL;
     NRF_P0->DIRSET = LED_ALL;
 
     NRF_CLOCK->LFCLKSRC = CLKSRC_XTAL;
