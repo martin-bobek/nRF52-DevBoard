@@ -20,6 +20,13 @@ int main(void) {
 void Sleep(void) {
     static uint32_t expectedTick = 0;
 
+#ifdef DEBUG
+    if (NRF_RTC0->COUNTER != expectedTick) {
+        __disable_irq();
+        while (1);
+    }
+#endif
+
     expectedTick = (expectedTick + 1) & RTC_COUNTER_COUNTER_Msk;
     __disable_irq();
     while (NRF_RTC0->COUNTER != expectedTick) {
