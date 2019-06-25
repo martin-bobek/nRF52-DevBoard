@@ -1,6 +1,7 @@
 #include <nrf.h>
 #include "init.h"
 
+static inline void LedThread(void) __attribute((always_inline));
 static inline void Sleep(void) __attribute((always_inline));
 
 int main(void) {
@@ -8,15 +9,18 @@ int main(void) {
 
     __enable_irq();
     while (1) {
-        if (NRF_P0->OUT & LED_ALL)
-            NRF_P0->OUTCLR = LED_ALL;
-        else
-            NRF_P0->OUTSET = LED_ALL;
+        LedThread();
 
         Sleep();
     }
 }
 
+void LedThread(void) {
+    if (NRF_P0->OUT & LED_ALL)
+        NRF_P0->OUTCLR = LED_ALL;
+    else
+        NRF_P0->OUTSET = LED_ALL;
+}
 void Sleep(void) {
     static uint32_t expectedTick = 0;
 
