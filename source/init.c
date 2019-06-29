@@ -18,6 +18,19 @@
 #define DCDC_ENABLED     MSK( POWER_DCDCEN_DCDCEN_Enabled,   POWER_DCDCEN_DCDCEN_Pos )
 #define CLKSRC_XTAL      MSK( CLOCK_LFCLKSRC_SRC_Xtal,       CLOCK_LFCLKSRC_SRC_Pos  )
 
+#define UARTE_PSEL_RTS  (MSK( RTS_PIN,                             UARTE_PSEL_RTS_PIN_Pos      ) | \
+                         MSK( UARTE_PSEL_RTS_CONNECT_Disconnected, UARTE_PSEL_RTS_CONNECT_Pos  ))
+#define UARTE_PSEL_TXD  (MSK( TXD_PIN,                             UARTE_PSEL_TXD_PIN_Pos      ) | \
+                         MSK( UARTE_PSEL_TXD_CONNECT_Connected,    UARTE_PSEL_TXD_CONNECT_Pos  ))
+#define UARTE_PSEL_CTS  (MSK( CTS_PIN,                             UARTE_PSEL_CTS_PIN_Pos      ) | \
+                         MSK( UARTE_PSEL_CTS_CONNECT_Disconnected, UARTE_PSEL_CTS_CONNECT_Pos  ))
+#define UARTE_PSEL_RXD  (MSK( RXD_PIN,                             UARTE_PSEL_RXD_PIN_Pos      ) | \
+                         MSK( UARTE_PSEL_RXD_CONNECT_Disconnected, UARTE_PSEL_RXD_CONNECT_Pos  ))
+#define UARTE_BAUDRATE   MSK( UARTE_BAUDRATE_BAUDRATE_Baud9600,    UARTE_BAUDRATE_BAUDRATE_Pos )
+#define UARTE_CONFIG    (MSK( UARTE_CONFIG_HWFC_Disabled,          UARTE_CONFIG_HWFC_Pos       ) | \
+                         MSK( UARTE_CONFIG_PARITY_Excluded,        UARTE_CONFIG_PARITY_Pos     ))
+#define UARTE_ENABLE     MSK( UARTE_ENABLE_ENABLE_Enabled,         UARTE_ENABLE_ENABLE_Pos     )
+
 #define RTC_PRESCALER   4095u
 
 static const uint32_t GPIO_CNF[32] = {
@@ -33,6 +46,7 @@ static const uint32_t GPIO_CNF[32] = {
 static inline void PowerInit(void) __attribute((always_inline));
 static inline void ErrataInit(void) __attribute((always_inline));
 static inline void GpioInit(void) __attribute((always_inline));
+static inline void UartInit(void) __attribute((always_inline));
 static inline void ClockInit(void) __attribute((always_inline));
 static inline void RtcInit(void) __attribute((always_inline));
 static inline void IsrInit(void) __attribute((always_inline));
@@ -42,6 +56,7 @@ void Init(void) {
     ErrataInit();
     GpioInit();
     ClockInit();
+    UartInit();
     RtcInit();
     IsrInit();
 }
@@ -58,6 +73,15 @@ void GpioInit(void) {
 
     NRF_P0->OUT = LED_ALL | UART_TXD;
     NRF_P0->DIR = LED_ALL | UART_TXD;
+}
+void UartInit(void) {
+    NRF_UARTE0->PSEL.RTS = UARTE_PSEL_RTS;
+    NRF_UARTE0->PSEL.TXD = UARTE_PSEL_TXD;
+    NRF_UARTE0->PSEL.CTS = UARTE_PSEL_CTS;
+    NRF_UARTE0->PSEL.RXD = UARTE_PSEL_RXD;
+    NRF_UARTE0->BAUDRATE = UARTE_BAUDRATE;
+    NRF_UARTE0->CONFIG = UARTE_CONFIG;
+    NRF_UARTE0->ENABLE = UARTE_ENABLE;
 }
 void ClockInit(void) {
     NRF_CLOCK->LFCLKSRC = CLKSRC_XTAL;
