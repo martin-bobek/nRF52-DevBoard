@@ -78,10 +78,12 @@ MAP := $(OUTDIR)/$(TARGET).map
 OUT := $(OUTDIR)/$(TARGET).out
 
 EXTS = .c .cpp .S
+TARGETS := $(ASM) $(HEX) $(BIN) $(MAP) $(OUT) $(addprefix $(OUTDIR)/,$(OBJDIR) $(DEPDIR))
 SOURCES := $(foreach DIR,$(SRCDIR),$(subst $(DIR)/,,$(wildcard $(addprefix $(DIR)/*,$(EXTS)))))
 OBJECTS := $(addprefix $(OUTDIR)/$(OBJDIR)/,$(addsuffix .o,$(SOURCES) $(LIB_SRC)))
 DEPENDS := $(addprefix $(OUTDIR)/$(DEPDIR)/,$(addsuffix .d,$(SOURCES) $(LIB_SRC)))
 
+BADTRGS := $(filter-out $(TARGETS),$(wildcard $(OUTDIR)/*))
 BADOBJS := $(filter-out $(OBJECTS),$(wildcard $(OUTDIR)/$(OBJDIR)/*))
 BADDEPS := $(filter-out $(DEPENDS),$(wildcard $(OUTDIR)/$(DEPDIR)/*))
 
@@ -89,7 +91,7 @@ BADDEPS := $(filter-out $(DEPENDS),$(wildcard $(OUTDIR)/$(DEPDIR)/*))
 .PHONY: all clean
 
 all: $(MAP) $(HEX) $(BIN) $(ASM)
-	@rm -f $(BADOBJS) $(BADDEPS)
+	@rm -fr $(BADTRGS) $(BADOBJS) $(BADDEPS)
 	arm-none-eabi-size $(OUT)
 
 $(ASM): $(OUT)
