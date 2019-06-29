@@ -129,5 +129,4 @@ clean:
 
 flash: all
 	nrfjprog --recover
-	nrfjprog --program $(HEX) --sectorerase --verify
-	nrfjprog --reset
+	nrfjprog --program $(HEX) --verify --reset
