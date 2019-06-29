@@ -39,7 +39,7 @@ MACHINE = \
 	-mthumb \
 	-mabi=aapcs \
 	-mfloat-abi=hard \
-	-mfpu=fpv4-sp-d16 \
+	-mfpu=fpv4-sp-d16
 
 ASMFLAGS := \
 	$(MACHINE) \
@@ -69,6 +69,8 @@ LDFLAGS := \
 	-T$(LDDESC)
 
 # BUILD PREPARATION
+MAKEFILE := $(word 1,$(MAKEFILE_LIST))
+
 ASM := $(OUTDIR)/$(TARGET).asm
 HEX := $(OUTDIR)/$(TARGET).hex
 BIN := $(OUTDIR)/$(TARGET).bin
@@ -106,10 +108,10 @@ $(HEX): $(OUT)
 
 -include $(DEPENDS)
 
-$(OUTDIR)/$(OBJDIR)/%.c.o: %.c $(OUTDIR)/$(DEPDIR)/%.c.d | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
+$(OUTDIR)/$(OBJDIR)/%.c.o: %.c $(OUTDIR)/$(DEPDIR)/%.c.d $(MAKEFILE) | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
 	arm-none-eabi-gcc -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(CFLAGS)
 
-$(OUTDIR)/$(OBJDIR)/%.S.o: %.S $(OUTDIR)/$(DEPDIR)/%.S.d | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
+$(OUTDIR)/$(OBJDIR)/%.S.o: %.S $(OUTDIR)/$(DEPDIR)/%.S.d $(MAKEFILE) | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
 	arm-none-eabi-gcc -x assembler-with-cpp -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(ASMFLAGS)
 
 $(DEPENDS):
