@@ -2,6 +2,7 @@
 #include "init.h"
 
 static inline void LedThread(void) __attribute((always_inline));
+static inline void UartThread(void) __attribute((always_inline));
 static inline void Sleep(void) __attribute((always_inline));
 
 int main(void) {
@@ -10,6 +11,7 @@ int main(void) {
     __enable_irq();
     while (1) {
         LedThread();
+        UartThread();
 
         Sleep();
     }
@@ -20,6 +22,19 @@ void LedThread(void) {
         NRF_P0->OUTCLR = LED_ALL;
     else
         NRF_P0->OUTSET = LED_ALL;
+}
+void UartThread(void) {
+    static char str[] = "Hello World!\n\r";
+    static uint8_t timer = 0;
+
+    timer++;
+    if (timer == 8) {
+        timer = 0;
+
+        NRF_UARTE0->TXD.PTR = (uint32_t)str;
+        NRF_UARTE0->TXD.MAXCNT = sizeof(str) - 1;
+        NRF_UARTE0->TASKS_STARTTX = 1;
+    }
 }
 void Sleep(void) {
     static uint32_t expectedTick = 0;
