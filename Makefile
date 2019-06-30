@@ -58,8 +58,10 @@ ASMFLAGS := \
 	$(DEFINE) \
 	$(INCDIR)
 
+CSTD = -std=c99
+CPPSTD = -std=c++14
+
 CFLAGS := \
-	-std=c99 \
 	-ffunction-sections \
 	-fdata-sections \
 	-fno-strict-aliasing \
@@ -123,7 +125,10 @@ $(HEX): $(OUT)
 -include $(DEPENDS)
 
 $(OUTDIR)/$(OBJDIR)/%.c.o: %.c $(OUTDIR)/$(DEPDIR)/%.c.d $(MAKEFILE) | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
-	arm-none-eabi-gcc -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(CFLAGS)
+	arm-none-eabi-gcc -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(CSTD) $(CFLAGS)
+
+$(OUTDIR)/$(OBJDIR)/%.cpp.o: %.cpp $(OUTDIR)/$(DEPDIR)/%.cpp.d $(MAKEFILE) | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
+	arm-none-eabi-g++ -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(CPPSTD) $(CFLAGS)
 
 $(OUTDIR)/$(OBJDIR)/%.S.o: %.S $(OUTDIR)/$(DEPDIR)/%.S.d $(MAKEFILE) | $(OUTDIR)/$(OBJDIR) $(OUTDIR)/$(DEPDIR)
 	arm-none-eabi-gcc -x assembler-with-cpp -c -o $@ $< -MMD -MP -MF $(word 2,$^) $(ASMFLAGS)
