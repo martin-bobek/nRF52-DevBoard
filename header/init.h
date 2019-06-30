@@ -24,6 +24,10 @@
 
 #define LED_ALL         (LED1 | LED2 | LED3 | LED4)
 
-void Init(void);
+#ifdef __cplusplus
+    extern "C" void Init(void);
+#else
+    void Init(void);
+#endif
 
 #endif
