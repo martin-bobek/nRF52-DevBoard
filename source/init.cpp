@@ -43,15 +43,15 @@ static const uint32_t GPIO_CNF[32] = {
 //      P0.24        P0.25        P0.26        P0.27        P0.28        P0.29        P0.30        P0.31
         INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN };
 
-static inline void PowerInit(void) __attribute((always_inline));
-static inline void ErrataInit(void) __attribute((always_inline));
-static inline void GpioInit(void) __attribute((always_inline));
-static inline void UartInit(void) __attribute((always_inline));
-static inline void ClockInit(void) __attribute((always_inline));
-static inline void RtcInit(void) __attribute((always_inline));
-static inline void IsrInit(void) __attribute((always_inline));
+static inline void PowerInit() __attribute((always_inline));
+static inline void ErrataInit() __attribute((always_inline));
+static inline void GpioInit() __attribute((always_inline));
+static inline void UartInit() __attribute((always_inline));
+static inline void ClockInit() __attribute((always_inline));
+static inline void RtcInit() __attribute((always_inline));
+static inline void IsrInit() __attribute((always_inline));
 
-void Init(void) {
+void Init() {
     PowerInit();
     ErrataInit();
     GpioInit();
@@ -61,20 +61,20 @@ void Init(void) {
     IsrInit();
 }
 
-void PowerInit(void) {
+void PowerInit() {
     NRF_POWER->DCDCEN = DCDC_ENABLED;
 }
-void ErrataInit(void) {
+void ErrataInit() {
     ERRATA108_DST = ERRATA108_SRC & ERRATA108_MSK;
 }
-void GpioInit(void) {
+void GpioInit() {
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
 
     NRF_P0->OUT = LED_ALL | UART_TXD;
     NRF_P0->DIR = LED_ALL | UART_TXD;
 }
-void UartInit(void) {
+void UartInit() {
     NRF_UARTE0->PSEL.RTS = UARTE_PSEL_RTS;
     NRF_UARTE0->PSEL.TXD = UARTE_PSEL_TXD;
     NRF_UARTE0->PSEL.CTS = UARTE_PSEL_CTS;
@@ -83,15 +83,15 @@ void UartInit(void) {
     NRF_UARTE0->CONFIG = UARTE_CONFIG;
     NRF_UARTE0->ENABLE = UARTE_ENABLE;
 }
-void ClockInit(void) {
+void ClockInit() {
     NRF_CLOCK->LFCLKSRC = CLKSRC_XTAL;
     NRF_CLOCK->TASKS_LFCLKSTART = 1;
 }
-void RtcInit(void) {
+void RtcInit() {
     NRF_RTC0->PRESCALER = RTC_PRESCALER;
     NRF_RTC0->INTENSET = RTC_INTENSET_TICK_Msk;
     NRF_RTC0->TASKS_START = 1;
 }
-void IsrInit(void) {
+void IsrInit() {
     NVIC->ISER[0] = BIT(RTC0_IRQn);
 }
