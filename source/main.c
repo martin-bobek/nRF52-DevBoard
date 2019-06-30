@@ -1,6 +1,8 @@
 #include <nrf.h>
 #include "init.h"
 
+void RTC0_IRQHandler(void) __attribute((interrupt));
+
 static inline void LedThread(void) __attribute((always_inline));
 static inline void UartThread(void) __attribute((always_inline));
 static inline void Sleep(void) __attribute((always_inline));
@@ -57,6 +59,6 @@ void Sleep(void) {
     __enable_irq();
 }
 
-void __attribute((interrupt)) RTC0_IRQHandler(void) {
+void RTC0_IRQHandler(void) {
     NRF_RTC0->EVENTS_TICK = 0;
 }
