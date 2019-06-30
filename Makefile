@@ -34,6 +34,17 @@ INCDIR := $(addprefix -I,$(INCDIR))
 DEFINE := $(addprefix -D,$(DEFINE))
 ARCHIVE := $(addprefix -l,$(ARCHIVE))
 
+WARNINGS = \
+	-Wall \
+	-Wextra \
+	-Wfloat-equal \
+	-Wcast-align \
+	-Wwrite-strings \
+	-Wlogical-op \
+	-Wmissing-declarations \
+	-Wredundant-decls \
+	-Wshadow
+
 MACHINE = \
 	-mcpu=cortex-M4 \
 	-mthumb \
@@ -54,6 +65,7 @@ CFLAGS := \
 	-fno-strict-aliasing \
 	-fno-builtin \
 	-fshort-enums \
+	$(WARNINGS) \
 	$(MACHINE) \
 	$(OPT) \
 	$(DEBUG) \
