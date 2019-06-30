@@ -18,20 +18,27 @@
 #define DCDC_ENABLED     MSK( POWER_DCDCEN_DCDCEN_Enabled,   POWER_DCDCEN_DCDCEN_Pos )
 #define CLKSRC_XTAL      MSK( CLOCK_LFCLKSRC_SRC_Xtal,       CLOCK_LFCLKSRC_SRC_Pos  )
 
-#define UARTE_PSEL_RTS  (MSK( RTS_PIN,                             UARTE_PSEL_RTS_PIN_Pos      ) | \
-                         MSK( UARTE_PSEL_RTS_CONNECT_Disconnected, UARTE_PSEL_RTS_CONNECT_Pos  ))
-#define UARTE_PSEL_TXD  (MSK( TXD_PIN,                             UARTE_PSEL_TXD_PIN_Pos      ) | \
-                         MSK( UARTE_PSEL_TXD_CONNECT_Connected,    UARTE_PSEL_TXD_CONNECT_Pos  ))
-#define UARTE_PSEL_CTS  (MSK( CTS_PIN,                             UARTE_PSEL_CTS_PIN_Pos      ) | \
-                         MSK( UARTE_PSEL_CTS_CONNECT_Disconnected, UARTE_PSEL_CTS_CONNECT_Pos  ))
-#define UARTE_PSEL_RXD  (MSK( RXD_PIN,                             UARTE_PSEL_RXD_PIN_Pos      ) | \
-                         MSK( UARTE_PSEL_RXD_CONNECT_Disconnected, UARTE_PSEL_RXD_CONNECT_Pos  ))
-#define UARTE_BAUDRATE   MSK( UARTE_BAUDRATE_BAUDRATE_Baud9600,    UARTE_BAUDRATE_BAUDRATE_Pos )
-#define UARTE_CONFIG    (MSK( UARTE_CONFIG_HWFC_Disabled,          UARTE_CONFIG_HWFC_Pos       ) | \
-                         MSK( UARTE_CONFIG_PARITY_Excluded,        UARTE_CONFIG_PARITY_Pos     ))
-#define UARTE_ENABLE     MSK( UARTE_ENABLE_ENABLE_Enabled,         UARTE_ENABLE_ENABLE_Pos     )
+static constexpr uint32_t UARTE_PSEL_RTS =
+        MSK( RTS_PIN,                             UARTE_PSEL_RTS_PIN_Pos     ) |
+        MSK( UARTE_PSEL_RTS_CONNECT_Disconnected, UARTE_PSEL_RTS_CONNECT_Pos );
+static constexpr uint32_t UARTE_PSEL_TXD =
+        MSK( TXD_PIN,                          UARTE_PSEL_TXD_PIN_Pos     ) |
+        MSK( UARTE_PSEL_TXD_CONNECT_Connected, UARTE_PSEL_TXD_CONNECT_Pos );
+static constexpr uint32_t UARTE_PSEL_CTS =
+        MSK( CTS_PIN,                             UARTE_PSEL_CTS_PIN_Pos     ) |
+        MSK( UARTE_PSEL_CTS_CONNECT_Disconnected, UARTE_PSEL_CTS_CONNECT_Pos );
+static constexpr uint32_t UARTE_PSEL_RXD =
+        MSK( RXD_PIN,                             UARTE_PSEL_RXD_PIN_Pos     ) |
+        MSK( UARTE_PSEL_RXD_CONNECT_Disconnected, UARTE_PSEL_RXD_CONNECT_Pos );
+static constexpr uint32_t UARTE_BAUDRATE =
+        MSK( UARTE_BAUDRATE_BAUDRATE_Baud9600, UARTE_BAUDRATE_BAUDRATE_Pos );
+static constexpr uint32_t UARTE_CONFIG =
+        MSK( UARTE_CONFIG_HWFC_Disabled,   UARTE_CONFIG_HWFC_Pos   ) |
+        MSK( UARTE_CONFIG_PARITY_Excluded, UARTE_CONFIG_PARITY_Pos );
+static constexpr uint32_t UARTE_ENABLE =
+        MSK( UARTE_ENABLE_ENABLE_Enabled, UARTE_ENABLE_ENABLE_Pos );
 
-#define RTC_PRESCALER   4095u
+static constexpr uint32_t RTC_PRESCALER = 4095u;
 
 static const uint32_t GPIO_CNF[32] = {
 //      P0.00 XL1    P0.01 XL2    P0.02        P0.03        P0.04        P0.05 RTS    P0.06 TxD    P0.07 CTS
