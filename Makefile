@@ -118,7 +118,7 @@ $(HEX): $(OUT)
 	arm-none-eabi-objcopy -O ihex $< $@
 
 %.out %.map: $(OBJECTS)
-	arm-none-eabi-gcc -o $*.out -Wl,-Map=$*.map $(OBJECTS) $(LDFLAGS)
+	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map $(OBJECTS) $(LDFLAGS)
 
 .SECONDARY: $(OBJECTS)
 
