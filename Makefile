@@ -78,6 +78,7 @@ LDFLAGS := \
 	-Wl,--gc-sections \
 	--specs=nano.specs \
 	$(MACHINE) \
+	$(OPT) \
 	$(ARCHIVE) \
 	-L$(N5_MDK) \
 	-T$(LDDESC)
