@@ -19,24 +19,24 @@
 #define CLKSRC_XTAL      MSK( CLOCK_LFCLKSRC_SRC_Xtal,       CLOCK_LFCLKSRC_SRC_Pos  )
 
 static constexpr uint32_t UARTE_PSEL_RTS =
-        MSK( RTS_PIN,                             UARTE_PSEL_RTS_PIN_Pos     ) |
-        MSK( UARTE_PSEL_RTS_CONNECT_Disconnected, UARTE_PSEL_RTS_CONNECT_Pos );
+        RTS_PIN                             << UARTE_PSEL_RTS_PIN_Pos     |
+        UARTE_PSEL_RTS_CONNECT_Disconnected << UARTE_PSEL_RTS_CONNECT_Pos;
 static constexpr uint32_t UARTE_PSEL_TXD =
-        MSK( TXD_PIN,                          UARTE_PSEL_TXD_PIN_Pos     ) |
-        MSK( UARTE_PSEL_TXD_CONNECT_Connected, UARTE_PSEL_TXD_CONNECT_Pos );
+        TXD_PIN                          << UARTE_PSEL_TXD_PIN_Pos     |
+        UARTE_PSEL_TXD_CONNECT_Connected << UARTE_PSEL_TXD_CONNECT_Pos;
 static constexpr uint32_t UARTE_PSEL_CTS =
-        MSK( CTS_PIN,                             UARTE_PSEL_CTS_PIN_Pos     ) |
-        MSK( UARTE_PSEL_CTS_CONNECT_Disconnected, UARTE_PSEL_CTS_CONNECT_Pos );
+        CTS_PIN                             << UARTE_PSEL_CTS_PIN_Pos     |
+        UARTE_PSEL_CTS_CONNECT_Disconnected << UARTE_PSEL_CTS_CONNECT_Pos;
 static constexpr uint32_t UARTE_PSEL_RXD =
-        MSK( RXD_PIN,                             UARTE_PSEL_RXD_PIN_Pos     ) |
-        MSK( UARTE_PSEL_RXD_CONNECT_Disconnected, UARTE_PSEL_RXD_CONNECT_Pos );
+        RXD_PIN                             << UARTE_PSEL_RXD_PIN_Pos     |
+        UARTE_PSEL_RXD_CONNECT_Disconnected << UARTE_PSEL_RXD_CONNECT_Pos;
 static constexpr uint32_t UARTE_BAUDRATE =
-        MSK( UARTE_BAUDRATE_BAUDRATE_Baud9600, UARTE_BAUDRATE_BAUDRATE_Pos );
+        UARTE_BAUDRATE_BAUDRATE_Baud9600 << UARTE_BAUDRATE_BAUDRATE_Pos;
 static constexpr uint32_t UARTE_CONFIG =
-        MSK( UARTE_CONFIG_HWFC_Disabled,   UARTE_CONFIG_HWFC_Pos   ) |
-        MSK( UARTE_CONFIG_PARITY_Excluded, UARTE_CONFIG_PARITY_Pos );
+        UARTE_CONFIG_HWFC_Disabled   << UARTE_CONFIG_HWFC_Pos   |
+        UARTE_CONFIG_PARITY_Excluded << UARTE_CONFIG_PARITY_Pos;
 static constexpr uint32_t UARTE_ENABLE =
-        MSK( UARTE_ENABLE_ENABLE_Enabled, UARTE_ENABLE_ENABLE_Pos );
+        UARTE_ENABLE_ENABLE_Enabled << UARTE_ENABLE_ENABLE_Pos;
 
 static constexpr uint32_t RTC_PRESCALER = 4095u;
 
