@@ -1,5 +1,5 @@
 # PROJECT CONFIGURATION
-OPT = -O3
+OPT = -O3 -flto
 
 DEFINE = \
 	__HEAP_SIZE=8192 \
