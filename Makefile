@@ -79,6 +79,7 @@ LDFLAGS := \
 	--specs=nano.specs \
 	$(MACHINE) \
 	$(OPT) \
+	$(DEBUG) \
 	$(ARCHIVE) \
 	-L$(N5_MDK) \
 	-T$(LDDESC)
