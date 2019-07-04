@@ -1,9 +1,7 @@
 #ifndef PORTMAP__
 #define PORTMAP__
 
-#include "init.h"
-
-#define BIT(n)          MSK(1, n)
+#define BIT(n)          (1u << n)
 
 #define RTS_PIN         5
 #define TXD_PIN         6
