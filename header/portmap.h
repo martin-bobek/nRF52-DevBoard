@@ -3,14 +3,16 @@
 
 #define BIT(n)          (1u << n)
 
-#define RTS_PIN         5
-#define TXD_PIN         6
-#define CTS_PIN         7
-#define RXD_PIN         8
-#define LED1_PIN        17
-#define LED2_PIN        18
-#define LED3_PIN        19
-#define LED4_PIN        20
+enum pin_t : uint8_t {
+    RTS_PIN = 5,
+    TXD_PIN,
+    CTS_PIN,
+    RXD_PIN,
+    LED1_PIN = 17,
+    LED2_PIN,
+    LED3_PIN,
+    LED4_PIN
+};
 
 constexpr uint32_t UART_RTS = BIT(RTS_PIN);
 constexpr uint32_t UART_TXD = BIT(TXD_PIN);
