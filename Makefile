@@ -96,8 +96,8 @@ OUT := $(OUTDIR)/$(TARGET).out
 EXTS = .c .cpp .S
 TARGETS := $(ASM) $(HEX) $(BIN) $(MAP) $(OUT) $(addprefix $(OUTDIR)/,$(OBJDIR) $(DEPDIR))
 SOURCES := $(foreach DIR,$(SRCDIR),$(subst $(DIR)/,,$(wildcard $(addprefix $(DIR)/*,$(EXTS)))))
-OBJECTS := $(addprefix $(OUTDIR)/$(OBJDIR)/,$(addsuffix .o,$(SOURCES) $(LIB_SRC)))
-DEPENDS := $(addprefix $(OUTDIR)/$(DEPDIR)/,$(addsuffix .d,$(SOURCES) $(LIB_SRC)))
+OBJECTS := $(addprefix $(OUTDIR)/$(OBJDIR)/,$(addsuffix .o,$(LIB_SRC) $(SOURCES)))
+DEPENDS := $(addprefix $(OUTDIR)/$(DEPDIR)/,$(addsuffix .d,$(LIB_SRC) $(SOURCES)))
 
 BADTRGS := $(filter-out $(TARGETS),$(wildcard $(OUTDIR)/*))
 BADOBJS := $(filter-out $(OBJECTS),$(wildcard $(OUTDIR)/$(OBJDIR)/*))
