@@ -1,7 +1,7 @@
 #include <nrf.h>
 #include "init.h"
 
-void RTC0_IRQHandler(void) __attribute((interrupt));
+extern "C" void RTC0_IRQHandler(void) __attribute((interrupt));
 
 static inline void LedThread(void) __attribute((always_inline));
 static inline void UartThread(void) __attribute((always_inline));
