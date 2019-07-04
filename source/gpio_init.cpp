@@ -3,7 +3,7 @@
 #include "init.h"
 
 static constexpr uint32_t HIDRV_BOTH =
-        GPIO_PIN_CNF_DIR_Input      << GPIO_PIN_CNF_DIR_Pos   |
+        GPIO_PIN_CNF_DIR_Output     << GPIO_PIN_CNF_DIR_Pos   |
         GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos |
         GPIO_PIN_CNF_PULL_Disabled  << GPIO_PIN_CNF_PULL_Pos  |
         GPIO_PIN_CNF_DRIVE_H0H1     << GPIO_PIN_CNF_DRIVE_Pos |
@@ -27,7 +27,7 @@ static constexpr uint32_t INDSC_PLDWN =
         GPIO_PIN_CNF_DRIVE_S0S1       << GPIO_PIN_CNF_DRIVE_Pos |
         GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos;
 static constexpr uint32_t LED_PIN_CNF =
-        GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos   |
+        GPIO_PIN_CNF_DIR_Output       << GPIO_PIN_CNF_DIR_Pos   |
         GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos |
         GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos  |
         GPIO_PIN_CNF_DRIVE_H0S1       << GPIO_PIN_CNF_DRIVE_Pos |
@@ -44,9 +44,8 @@ static const uint32_t GPIO_CNF[32] = {
         INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN, INDSC_PLDWN };
 
 void GpioInit() {
+    NRF_P0->OUT = LED_ALL | UART_TXD;
+
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
-
-    NRF_P0->OUT = LED_ALL | UART_TXD;
-    NRF_P0->DIR = LED_ALL | UART_TXD;
 }
