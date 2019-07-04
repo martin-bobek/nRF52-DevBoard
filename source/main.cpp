@@ -1,17 +1,17 @@
 #include <nrf.h>
 #include "init.h"
 
-extern "C" void RTC0_IRQHandler(void) __attribute((interrupt));
+extern "C" void RTC0_IRQHandler() __attribute((interrupt));
 
-static inline void LedThread(void) __attribute((always_inline));
-static inline void UartThread(void) __attribute((always_inline));
-static inline void Sleep(void) __attribute((always_inline));
+static inline void LedThread() __attribute((always_inline));
+static inline void UartThread() __attribute((always_inline));
+static inline void Sleep() __attribute((always_inline));
 
-int main(void) {
+int main() {
     Init();
 
     __enable_irq();
-    while (1) {
+    while (true) {
         LedThread();
         UartThread();
 
@@ -19,13 +19,13 @@ int main(void) {
     }
 }
 
-void LedThread(void) {
+void LedThread() {
     if (NRF_P0->OUT & LED_ALL)
         NRF_P0->OUTCLR = LED_ALL;
     else
         NRF_P0->OUTSET = LED_ALL;
 }
-void UartThread(void) {
+void UartThread() {
     static char str[] = "Hello World!\n\r";
     static uint8_t timer = 0;
 
@@ -38,13 +38,13 @@ void UartThread(void) {
         NRF_UARTE0->TASKS_STARTTX = 1;
     }
 }
-void Sleep(void) {
+void Sleep() {
     static uint32_t expectedTick = 0;
 
 #ifdef DEBUG
     if (NRF_RTC0->COUNTER != expectedTick) {
         __disable_irq();
-        while (1);
+        while (true);
     }
 #endif
 
@@ -59,6 +59,6 @@ void Sleep(void) {
     __enable_irq();
 }
 
-void RTC0_IRQHandler(void) {
+void RTC0_IRQHandler() {
     NRF_RTC0->EVENTS_TICK = 0;
 }
