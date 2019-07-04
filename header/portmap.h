@@ -12,13 +12,13 @@
 #define LED3_PIN        19
 #define LED4_PIN        20
 
-#define UART_RTS        BIT(RTS_PIN)
-#define UART_TXD        BIT(TXD_PIN)
-#define UART_CTS        BIT(CTS_PIN)
-#define UART_RXD        BIT(RXD_PIN)
-#define LED1            BIT(LED1_PIN)
-#define LED2            BIT(LED2_PIN)
-#define LED3            BIT(LED3_PIN)
-#define LED4            BIT(LED4_PIN)
+constexpr uint32_t UART_RTS = BIT(RTS_PIN);
+constexpr uint32_t UART_TXD = BIT(TXD_PIN);
+constexpr uint32_t UART_CTS = BIT(CTS_PIN);
+constexpr uint32_t UART_RXD = BIT(RXD_PIN);
+constexpr uint32_t LED1     = BIT(LED1_PIN);
+constexpr uint32_t LED2     = BIT(LED2_PIN);
+constexpr uint32_t LED3     = BIT(LED3_PIN);
+constexpr uint32_t LED4     = BIT(LED4_PIN);
 
 #endif
