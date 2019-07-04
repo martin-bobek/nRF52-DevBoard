@@ -2,14 +2,19 @@
 #include "gpio_init.h"
 #include "init.h"
 
-#define HIDRV_BOTH       MSK( GPIO_PIN_CNF_DRIVE_H0H1,       GPIO_PIN_CNF_DRIVE_Pos  )
-#define INDSC_NOPL       MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos  )
-#define INDSC_PLUP      (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos  ) | \
-                         MSK( GPIO_PIN_CNF_PULL_Pullup,      GPIO_PIN_CNF_PULL_Pos   ))
-#define INDSC_PLDWN     (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos  ) | \
-                         MSK( GPIO_PIN_CNF_PULL_Pulldown,    GPIO_PIN_CNF_PULL_Pos   ))
-#define LED_PIN_CNF     (MSK( GPIO_PIN_CNF_INPUT_Disconnect, GPIO_PIN_CNF_INPUT_Pos  ) | \
-                         MSK( GPIO_PIN_CNF_DRIVE_H0S1,       GPIO_PIN_CNF_DRIVE_Pos  ))
+static constexpr uint32_t HIDRV_BOTH =
+        GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos;
+static constexpr uint32_t INDSC_NOPL =
+        GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos;
+static constexpr uint32_t INDSC_PLUP =
+        GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos |
+        GPIO_PIN_CNF_PULL_Pullup      << GPIO_PIN_CNF_PULL_Pos;
+static constexpr uint32_t INDSC_PLDWN =
+        GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos |
+        GPIO_PIN_CNF_PULL_Pulldown    << GPIO_PIN_CNF_PULL_Pos;
+static constexpr uint32_t LED_PIN_CNF =
+        GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos |
+        GPIO_PIN_CNF_DRIVE_H0S1       << GPIO_PIN_CNF_DRIVE_Pos;
 
 static const uint32_t GPIO_CNF[32] = {
 //      P0.00 XL1    P0.01 XL2    P0.02        P0.03        P0.04        P0.05 RTS    P0.06 TxD    P0.07 CTS
