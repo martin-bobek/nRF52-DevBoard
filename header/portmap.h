@@ -1,7 +1,7 @@
 #ifndef PORTMAP__
 #define PORTMAP__
 
-#define BIT(n)          (1u << n)
+constexpr uint32_t BIT(uint8_t n) { return 1u << n; }
 
 enum pin_t : uint8_t {
     RTS_PIN = 5,
