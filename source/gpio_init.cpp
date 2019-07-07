@@ -56,6 +56,9 @@ public:
 private:
     uint32_t arr[N];
 };
+static constexpr ArrayInit<5, 42> list = {
+        { 1, 2 },
+        { 3, 4 } };
 
 static const uint32_t GPIO_CNF[32] = {
 //      P0.00 XL1    P0.01 XL2    P0.02        P0.03        P0.04        P0.05 RTS    P0.06 TxD    P0.07 CTS
@@ -72,4 +75,25 @@ void GpioInit() {
 
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
+}
+
+bool ArrayTest() {
+    bool success = true;
+
+    for (uint8_t i = 0; i < 5; i++) {
+        if (i == 1) {
+            if (list[i] != 2)
+                success = false;
+        }
+        else if (i == 3) {
+            if (list[i] != 4)
+                success = false;
+        }
+        else {
+            if (list[i] != 42)
+                success = false;
+        }
+    }
+
+    return success;
 }

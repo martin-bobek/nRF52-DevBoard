@@ -2,5 +2,6 @@
 #define GPIO_INIT__
 
 void GpioInit();
+bool ArrayTest();
 
 #endif

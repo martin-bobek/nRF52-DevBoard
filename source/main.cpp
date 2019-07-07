@@ -1,5 +1,6 @@
 #include <nrf.h>
 #include "init.h"
+#include "gpio_init.h"
 
 extern "C" void RTC0_IRQHandler() __attribute((interrupt));
 
@@ -19,7 +20,8 @@ int main() {
     for (uint8_t i = 0; i < 8; i++)
         Sleep();
 
-    // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
+    if (ArrayTest())
+        NRF_P0->OUTCLR = LED_ALL;
 
     while (true)
         NRF_POWER->SYSTEMOFF = 1;
