@@ -1,7 +1,7 @@
 #include <nrf.h>
 #include "array_init.h"
 #include "gpio_init.h"
-#include "init.h"
+#include "portmap.h"
 
 static constexpr uint32_t HIDRV_BOTH =
         GPIO_PIN_CNF_DIR_Output     << GPIO_PIN_CNF_DIR_Pos   |
@@ -49,7 +49,7 @@ static constexpr ArrayInit<32, INDSC_PLDWN> GPIO_CNF = {
 };
 
 void GpioInit() {
-    NRF_P0->OUT = LED_ALL | UART_TXD;
+    NRF_P0->OUT = LED1 | LED2 | LED3 | LED4 | UART_TXD;
 
     for (uint8_t pin = 0; pin < 32; pin++)
         NRF_P0->PIN_CNF[pin] = GPIO_CNF[pin];
