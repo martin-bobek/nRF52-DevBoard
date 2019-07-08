@@ -9,14 +9,7 @@ class ArrayInit {
 public:
     struct Element;
 
-    constexpr ArrayInit(const std::initializer_list<Element> list) : arr() {
-        for (size_t i = 0; i < N; i++)
-            arr[i] = Default;
-
-        for (auto it = list.begin(); it < list.end(); it++)
-            arr[it->pos] = it->val;
-    }
-
+    inline constexpr ArrayInit(const std::initializer_list<Element> list);
     uint32_t operator[](size_t index) const { return arr[index]; }
 private:
     uint32_t arr[N];
@@ -28,5 +21,15 @@ struct ArrayInit<N, Default>::Element {
     size_t pos;
     uint32_t val;
 };
+
+
+template <size_t N, uint32_t Default>
+constexpr ArrayInit<N, Default>::ArrayInit(const std::initializer_list<Element> list) : arr() {
+   for (size_t i = 0; i < N; i++)
+       arr[i] = Default;
+
+   for (auto it = list.begin(); it < list.end(); it++)
+       arr[it->pos] = it->val;
+}
 
 #endif
