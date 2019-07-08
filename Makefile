@@ -14,7 +14,6 @@ INCDIR = \
 	header
 
 LIB_SRC = \
-	gcc_startup_nrf52.S \
 	system_nrf52.c
 
 LDDESC = nrf52_xxaa.ld
