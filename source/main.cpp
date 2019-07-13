@@ -3,9 +3,7 @@
 
 extern "C" void RTC0_IRQHandler() __attribute((interrupt));
 
-static inline void Sleep() __attribute((always_inline));
-
-static volatile uint8_t LedsToggle = 0;
+static void Sleep();
 
 int main() {
     Init();
@@ -13,13 +11,13 @@ int main() {
 
     NRF_P0->OUTCLR = LED_ALL;
 
-    for (uint8_t i = 0; i < 8; i++, LedsToggle = 0)
-        while (!LedsToggle);
+    for (uint8_t i = 0; i < 8; i++)
+        Sleep();
 
     NRF_P0->OUTSET = LED_ALL;
 
-    for (uint8_t i = 0; i < 8; i++, LedsToggle = 0)
-        while (!LedsToggle);
+    for (uint8_t i = 0; i < 8; i++)
+        Sleep();
 
     // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
 }
@@ -47,5 +45,4 @@ void Sleep() {
 
 void RTC0_IRQHandler() {
     NRF_RTC0->EVENTS_TICK = 0;
-    LedsToggle = 1;
 }
