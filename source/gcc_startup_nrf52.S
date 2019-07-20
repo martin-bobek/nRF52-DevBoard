@@ -1,10 +1,7 @@
     .syntax unified
     .arch armv7e-m
 
-#ifndef __STARTUP_CONFIG_STACK_ALIGNEMENT
-#error "Alignment not defined!"
 #define __STARTUP_CONFIG_STACK_ALIGNEMENT 3
-#endif
 
     .section .stack
 #if defined(__STARTUP_CONFIG)

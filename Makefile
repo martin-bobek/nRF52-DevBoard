@@ -27,7 +27,7 @@ DEPDIR = depends
 DEBUG = -g3
 VPATH := $(SRCDIR) $(N5_MDK)
 INCDIR += $(N5_MDK) $(CMSIS)
-ARCHIVE += c nosys m
+ARCHIVE += c m
 
 INCDIR := $(addprefix -I,$(INCDIR))
 DEFINE := $(addprefix -D,$(DEFINE))
@@ -75,13 +75,13 @@ CFLAGS := \
 
 LDFLAGS := \
 	-Wl,--gc-sections \
-	--specs=nano.specs \
 	$(MACHINE) \
 	$(OPT) \
 	$(DEBUG) \
 	$(ARCHIVE) \
 	-L$(N5_MDK) \
-	-T$(LDDESC)
+	-T$(LDDESC) \
+	--specs=nano.specs \
 
 # BUILD PREPARATION
 MAKEFILE := $(word 1,$(MAKEFILE_LIST))
@@ -119,7 +119,7 @@ $(HEX): $(OUT)
 	arm-none-eabi-objcopy -O ihex $< $@
 
 %.out %.map: $(OBJECTS)
-	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map $(OBJECTS) $(LDFLAGS)
+	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map,--cref $(OBJECTS) $(LDFLAGS) -v
 
 .SECONDARY: $(OBJECTS)
 
