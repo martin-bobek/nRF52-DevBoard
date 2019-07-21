@@ -28,7 +28,6 @@ DEPDIR = depends
 DEBUG = -g3
 VPATH := $(SRCDIR) $(N5_MDK)
 INCDIR += $(N5_MDK) $(CMSIS)
-ARCHIVE += c nosys m
 
 INCDIR := $(addprefix -I,$(INCDIR))
 DEFINE := $(addprefix -D,$(DEFINE))
@@ -77,6 +76,7 @@ CFLAGS := \
 LDFLAGS := \
 	-Wl,--gc-sections \
 	--specs=nano.specs \
+	--specs=nosys.specs \
 	$(MACHINE) \
 	$(OPT) \
 	$(DEBUG) \
