@@ -76,7 +76,6 @@ CFLAGS := \
 LDFLAGS := \
 	-Wl,--gc-sections \
 	--specs=nano.specs \
-	--specs=nosys.specs \
 	$(MACHINE) \
 	$(OPT) \
 	$(DEBUG) \
