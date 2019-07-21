@@ -21,9 +21,6 @@ int main() {
         Sleep();
 
     // RE-ENABLE LEDS TO INDICATE TEST OUTCOME
-
-    while (true)
-        NRF_POWER->SYSTEMOFF = 1;
 }
 
 void Sleep() {
