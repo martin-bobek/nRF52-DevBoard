@@ -119,7 +119,7 @@ $(BIN): $(OUT)
 $(HEX): $(OUT)
 	arm-none-eabi-objcopy -O ihex $< $@
 
-%.out %.map: $(OBJECTS)
+%.out %.map: $(OBJECTS) $(LDDESC)
 	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map $(OBJECTS) $(LDFLAGS)
 
 .SECONDARY: $(OBJECTS)
