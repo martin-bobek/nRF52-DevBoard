@@ -3,6 +3,9 @@
 #include "portmap.h"
 #include "uarte.h"
 
+extern "C" void UARTE0_UART0_IRQHandler() __attribute((interrupt));
+static void StartTransfer();
+
 struct Message {
     constexpr Message() : str(nullptr), length(0) {}
     constexpr Message(const char *_str, size_t _length) : str(_str), length(_length) {}
@@ -34,8 +37,9 @@ static constexpr uint32_t BUFFER_LENGTH = 32;
 static constexpr uint32_t BUFFER_FULL 	= BUFFER_LENGTH;
 
 static Message ptrBuffer[BUFFER_LENGTH];
-static uint8_t head = 0;
-static uint8_t tail = 0;
+static volatile uint8_t head = 0;
+static volatile uint8_t tail = 0;
+static volatile bool txActive = false;
 
 
 void UartInit() {
@@ -60,5 +64,34 @@ int SerialWrite(const char *str, size_t length) {
     if (head == tail)
         head = BUFFER_FULL;
 
+    if (!txActive) {
+        txActive = true;
+        StartTransfer();
+    }
+
     return SERIAL_SUCCESS;
+}
+
+void UARTE0_UART0_IRQHandler() {
+    NRF_UARTE0->EVENTS_ENDTX = 0;
+
+    if (head == BUFFER_FULL)
+        head = tail;
+
+    tail++;
+    if (tail == BUFFER_LENGTH)
+        tail = 0;
+
+    if (tail == head) {
+        txActive = false;
+        return;
+    }
+
+    StartTransfer();
+}
+
+void StartTransfer() {
+    NRF_UARTE0->TXD.PTR = (uint32_t)ptrBuffer[tail].str;
+    NRF_UARTE0->TXD.MAXCNT = ptrBuffer[tail].length;
+    NRF_UARTE0->TASKS_STARTTX = 1;
 }
