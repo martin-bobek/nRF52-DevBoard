@@ -1,6 +1,14 @@
 #include <nrf.h>
+#include <cstddef>
 #include "portmap.h"
 #include "uarte.h"
+
+struct Message {
+    constexpr Message() : str(nullptr), length(0) {}
+    constexpr Message(const char *_str, size_t _length) : str(_str), length(_length) {}
+    const char *str;
+    size_t length;
+};
 
 static constexpr uint32_t UARTE_PSEL_RTS =
         RTS_PIN                             << UARTE_PSEL_RTS_PIN_Pos     |
@@ -25,7 +33,7 @@ static constexpr uint32_t UARTE_ENABLE =
 static constexpr uint32_t BUFFER_LENGTH = 32;
 static constexpr uint32_t BUFFER_FULL 	= BUFFER_LENGTH;
 
-static const char *ptrBuffer[BUFFER_LENGTH];
+static Message ptrBuffer[BUFFER_LENGTH];
 static uint8_t head = 0;
 static uint8_t tail = 0;
 
@@ -40,11 +48,11 @@ void UartInit() {
     NRF_UARTE0->ENABLE = UARTE_ENABLE;
 }
 
-int SerialWrite(const char *str) {
+int SerialWrite(const char *str, size_t length) {
     if (head == BUFFER_FULL)
         return SERIAL_BUFFER_FULL;
 
-    ptrBuffer[head] = str;
+    ptrBuffer[head] = { str, length };
 
     head++;
     if (head == BUFFER_LENGTH)
