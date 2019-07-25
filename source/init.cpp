@@ -46,5 +46,5 @@ void RtcInit() {
     NRF_RTC0->TASKS_START = 1;
 }
 void IsrInit() {
-    NVIC->ISER[0] = BIT(RTC0_IRQn);
+    NVIC->ISER[0] = BIT(UARTE0_UART0_IRQn) | BIT(RTC0_IRQn);
 }

@@ -13,6 +13,18 @@ struct Message {
     size_t length;
 };
 
+static constexpr uint32_t UARTE_INTEN =
+        UARTE_INTEN_TXSTOPPED_Disabled << UARTE_INTEN_TXSTOPPED_Pos |
+        UARTE_INTEN_TXSTARTED_Disabled << UARTE_INTEN_TXSTARTED_Pos |
+        UARTE_INTEN_RXSTARTED_Disabled << UARTE_INTEN_RXSTARTED_Pos |
+        UARTE_INTEN_RXTO_Disabled      << UARTE_INTEN_RXTO_Pos      |
+        UARTE_INTEN_ERROR_Disabled     << UARTE_INTEN_ERROR_Pos     |
+        UARTE_INTEN_ENDTX_Enabled      << UARTE_INTEN_ENDTX_Pos     |
+        UARTE_INTEN_TXDRDY_Disabled    << UARTE_INTEN_TXDRDY_Pos    |
+        UARTE_INTEN_ENDRX_Disabled     << UARTE_INTEN_ENDRX_Pos     |
+        UARTE_INTEN_RXDRDY_Disabled    << UARTE_INTEN_RXDRDY_Pos    |
+        UARTE_INTEN_NCTS_Disabled      << UARTE_INTEN_NCTS_Pos      |
+        UARTE_INTEN_CTS_Disabled       << UARTE_INTEN_CTS_Pos;
 static constexpr uint32_t UARTE_PSEL_RTS =
         RTS_PIN                             << UARTE_PSEL_RTS_PIN_Pos     |
         UARTE_PSEL_RTS_CONNECT_Disconnected << UARTE_PSEL_RTS_CONNECT_Pos;
@@ -43,6 +55,7 @@ static volatile bool txActive = false;
 
 
 void UartInit() {
+    NRF_UARTE0->INTEN = UARTE_INTEN;
     NRF_UARTE0->PSEL.RTS = UARTE_PSEL_RTS;
     NRF_UARTE0->PSEL.TXD = UARTE_PSEL_TXD;
     NRF_UARTE0->PSEL.CTS = UARTE_PSEL_CTS;
