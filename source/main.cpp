@@ -1,5 +1,6 @@
 #include <nrf.h>
 #include "init.h"
+#include "uarte.h"
 
 extern "C" void RTC0_IRQHandler() __attribute((interrupt));
 
@@ -33,6 +34,7 @@ void UartThread() {
     if (timer == 8) {
         timer = 0;
 
+        SerialWrite(str, sizeof(str) - 1);
     }
 }
 void Sleep() {
