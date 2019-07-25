@@ -33,9 +33,6 @@ void UartThread() {
     if (timer == 8) {
         timer = 0;
 
-        NRF_UARTE0->TXD.PTR = (uint32_t)str;
-        NRF_UARTE0->TXD.MAXCNT = sizeof(str) - 1;
-        NRF_UARTE0->TASKS_STARTTX = 1;
     }
 }
 void Sleep() {
