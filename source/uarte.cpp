@@ -1,5 +1,6 @@
 #include <nrf.h>
 #include <cstddef>
+#include "mutex.h"
 #include "portmap.h"
 #include "uarte.h"
 
@@ -51,7 +52,7 @@ static constexpr uint32_t BUFFER_FULL 	= BUFFER_LENGTH;
 static Message ptrBuffer[BUFFER_LENGTH];
 static volatile uint8_t head = 0;
 static volatile uint8_t tail = 0;
-static volatile bool txActive = false;
+static Mutex txActive;
 
 
 void UartInit() {
@@ -77,10 +78,8 @@ int SerialWrite(const char *str, size_t length) {
     if (head == tail)
         head = BUFFER_FULL;
 
-    if (!txActive) {
-        txActive = true;
+    if (txActive.Lock())
         StartTransfer();
-    }
 
     return SERIAL_SUCCESS;
 }
@@ -95,12 +94,10 @@ void UARTE0_UART0_IRQHandler() {
     if (tail == BUFFER_LENGTH)
         tail = 0;
 
-    if (tail == head) {
-        txActive = false;
-        return;
-    }
-
-    StartTransfer();
+    if (tail == head)
+        txActive.Unlock();
+    else
+        StartTransfer();
 }
 
 void StartTransfer() {
