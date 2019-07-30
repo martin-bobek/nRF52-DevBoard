@@ -50,8 +50,8 @@ static constexpr uint32_t BUFFER_LENGTH = 32;
 static constexpr uint32_t BUFFER_FULL 	= BUFFER_LENGTH + 1;
 
 static Message ptrBuffer[BUFFER_LENGTH];
-static volatile uint8_t head = 0;
-static volatile uint8_t tail = 0;
+static uint8_t head = 0;
+static uint8_t tail = 0;
 static Mutex txActive;
 
 
