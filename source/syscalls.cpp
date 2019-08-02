@@ -15,10 +15,14 @@ extern "C" int _kill(int pid, int sig);
 extern "C" int _lseek(int file, int ptr, int dir);
 extern "C" int _read(int file, char *ptr, int len);
 extern "C" caddr_t _sbrk(int incr);
+extern "C" int _write(int file, char *ptr, int len);
 
 static void ErrorExit(const char str[], size_t len) __attribute((noreturn));
 
 static constexpr char HEAP_OVERFLOW_STR[] = "Error: Heap needs to expand beyond limit.\n\r";
+
+static constexpr int8_t UNSENT = -1;
+static constexpr char LENGTH_ERROR_STR[] = "Error: Call to _write used more than 1 character.\n\r";
 
 static constexpr size_t BUFFER_SIZE = 100;
 static char buffer[BUFFER_SIZE];
@@ -69,6 +73,33 @@ caddr_t _sbrk(int incr) {
 
     heap_end += incr;
     return (caddr_t)prev_heap_end;
+}
+
+int _write(int, char *ptr, int len) {
+    static int8_t released = UNSENT;
+    static size_t length = 0;
+
+    if (len != 1)
+        ErrorExit(LENGTH_ERROR_STR, StringLen(LENGTH_ERROR_STR));
+    if (released == SERIAL_UNRELEASED) {
+        errno = ENOSPC;
+        return -1;
+    }
+    if (released == SERIAL_RELEASED)
+        length = 0;
+
+    buffer[length++] = *ptr;
+    if (*ptr == '\n')
+        buffer[length++] = '\r';
+
+    if (*ptr == '\n' || length + 1 >= BUFFER_SIZE) {
+        if (SerialWrite(buffer, length, &released) != SERIAL_SUCCESS) {
+            errno = ENOSPC;
+            return -1;
+        }
+    }
+
+    return 1;
 }
 
 void ErrorExit(const char str[], size_t len) {
