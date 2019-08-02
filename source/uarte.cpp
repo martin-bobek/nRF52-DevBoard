@@ -8,9 +8,11 @@ extern "C" void UARTE0_UART0_IRQHandler() __attribute((interrupt));
 static void StartTransfer();
 
 struct Message {
-    constexpr Message() : str(nullptr), length(0) {}
-    constexpr Message(const char *_str, size_t _length) : str(_str), length(_length) {}
+    constexpr Message() : str(nullptr), release(nullptr), length(0) {}
+    constexpr Message(const char *_str, int8_t *_release, size_t _length) :
+            str(_str), release(_release), length(_length) {}
     const char *str;
+    int8_t *release;
     size_t length;
 };
 
@@ -66,11 +68,13 @@ void UartInit() {
     NRF_UARTE0->ENABLE = UARTE_ENABLE;
 }
 
-int SerialWrite(const char *str, size_t length) {
+int SerialWrite(const char *str, size_t length, int8_t *released) {
     if (head == BUFFER_FULL)
         return SERIAL_BUFFER_FULL;
 
-    ptrBuffer[head] = { str, length };
+    ptrBuffer[head] = { str, released, length };
+    if (released)
+        *released = SERIAL_UNRELEASED;
 
     head++;
     if (head == BUFFER_LENGTH)
@@ -89,6 +93,9 @@ void UARTE0_UART0_IRQHandler() {
 
     if (head == BUFFER_FULL)
         head = tail;
+
+    if (ptrBuffer[tail].release)
+        *ptrBuffer[tail].release = SERIAL_RELEASED;
 
     tail++;
     if (tail == BUFFER_LENGTH)
