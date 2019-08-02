@@ -10,6 +10,7 @@ extern "C" int _fstat(int file, struct stat *st);
 extern "C" int _getpid();
 extern "C" int _isatty(int file);
 extern "C" int _kill(int pid, int sig);
+extern "C" int _lseek(int file, int ptr, int dir);
 
 void _exit() {
     while (true);
@@ -35,4 +36,8 @@ int _isatty(int) {
 int _kill(int, int) {
     errno = EINVAL;
     return -1;
+}
+
+int _lseek(int, int, int) {
+    return 0;
 }
