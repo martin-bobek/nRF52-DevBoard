@@ -1,4 +1,5 @@
 #include <cerrno>
+#include <nrf.h>
 #include <sys/stat.h>
 #include "uarte.h"
 
@@ -13,8 +14,11 @@ extern "C" int _isatty(int file);
 extern "C" int _kill(int pid, int sig);
 extern "C" int _lseek(int file, int ptr, int dir);
 extern "C" int _read(int file, char *ptr, int len);
+extern "C" caddr_t _sbrk(int incr);
 
 static void ErrorExit(const char str[], size_t len) __attribute((noreturn));
+
+static constexpr char HEAP_OVERFLOW_STR[] = "Error: Heap needs to expand into the stack.\n\r";
 
 static constexpr size_t BUFFER_SIZE = 100;
 static char buffer[BUFFER_SIZE];
@@ -51,6 +55,19 @@ int _lseek(int, int, int) {
 
 int _read(int, char *, int) {
     return 0;
+}
+
+caddr_t _sbrk(int incr) {
+    extern char __end__;
+    static char *heap_end = &__end__;
+    char *prev_heap_end;
+
+    prev_heap_end = heap_end;
+    if (heap_end + incr > (char *)__get_MSP())
+        ErrorExit(HEAP_OVERFLOW_STR, StringLen(HEAP_OVERFLOW_STR));
+
+    heap_end += incr;
+    return (caddr_t)prev_heap_end;
 }
 
 void ErrorExit(const char str[], size_t len) {
