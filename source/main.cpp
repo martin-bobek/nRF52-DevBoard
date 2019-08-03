@@ -1,3 +1,4 @@
+#include <cassert>
 #include <nrf.h>
 #include "init.h"
 #include "uarte.h"
@@ -35,6 +36,7 @@ void UartThread() {
         timer = 0;
 
         SerialWrite(str, StringLen(str));
+        assert(timer == 8);
     }
 }
 void Sleep() {
