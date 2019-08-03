@@ -1,5 +1,7 @@
 #include <cerrno>
+#include <nrf.h>
 #include <sys/stat.h>
+#include "uarte.h"
 
 #undef errno
 extern int errno;
@@ -12,6 +14,10 @@ extern "C" int _isatty(int file);
 extern "C" int _kill(int pid, int sig);
 extern "C" int _lseek(int file, int ptr, int dir);
 extern "C" int _read(int file, char *ptr, int len);
+extern "C" caddr_t _sbrk(int incr);
+
+static char HEAP_OVERFLOW_STR[] = "Error: Heap needs to expand into the stack.";
+static constexpr size_t HEAP_OVERFLOW_LEN = sizeof(HEAP_OVERFLOW_STR) - 1;
 
 void _exit() {
     while (true);
@@ -45,4 +51,19 @@ int _lseek(int, int, int) {
 
 int _read(int, char *, int) {
     return 0;
+}
+
+caddr_t _sbrk(int incr) {
+    extern char __end__;
+    static char *heap_end = &__end__;
+    char *prev_heap_end;
+
+    prev_heap_end = heap_end;
+    if (heap_end + incr > (char *)__get_MSP()) {
+        SerialWrite(HEAP_OVERFLOW_STR, HEAP_OVERFLOW_LEN);
+        _exit();
+    }
+
+    heap_end += incr;
+    return (caddr_t)prev_heap_end;
 }
