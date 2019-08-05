@@ -34,7 +34,7 @@ void UartThread() {
     if (timer == 8) {
         timer = 0;
 
-        SerialWrite(str, sizeof(str) - 1);
+        SerialWrite(str, StringLen(str));
     }
 }
 void Sleep() {

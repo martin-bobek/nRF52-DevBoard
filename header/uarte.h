@@ -10,5 +10,6 @@ constexpr int8_t SERIAL_RELEASED   =  1;
 
 void UartInit();
 int SerialWrite(const char *str, size_t length, int8_t *released = nullptr);
+constexpr size_t StringLen(const char *str) { return *str ? 1 + StringLen(str + 1) : 0; }
 
 #endif
