@@ -40,7 +40,7 @@ void UartThread() {
 void Sleep() {
     static uint32_t expectedTick = 0;
 
-#ifdef DEBUG
+#ifndef NDEBUG
     if (NRF_RTC0->COUNTER != expectedTick) {
         __disable_irq();
         while (true);
