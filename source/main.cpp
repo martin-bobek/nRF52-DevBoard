@@ -27,7 +27,7 @@ void LedThread() {
         NRF_P0->OUTSET = LED_ALL;
 }
 void UartThread() {
-    static char str[] = "Hello World!\n\r";
+    constexpr char str[] = "Hello World!\n\r";
     static uint8_t timer = 0;
 
     timer++;
