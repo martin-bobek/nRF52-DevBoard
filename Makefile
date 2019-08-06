@@ -17,7 +17,7 @@ LIB_SRC = \
 	gcc_startup_nrf52.S \
 	system_nrf52.c
 
-LDDESC = nrf52_xxaa.ld
+LDDESC = config.ld
 
 # BUILD CONFIGURATION
 TARGET = application
@@ -28,7 +28,6 @@ DEPDIR = depends
 DEBUG = -g3
 VPATH := $(SRCDIR) $(N5_MDK)
 INCDIR += $(N5_MDK) $(CMSIS)
-ARCHIVE += c nosys m
 
 INCDIR := $(addprefix -I,$(INCDIR))
 DEFINE := $(addprefix -D,$(DEFINE))
@@ -119,7 +118,7 @@ $(BIN): $(OUT)
 $(HEX): $(OUT)
 	arm-none-eabi-objcopy -O ihex $< $@
 
-%.out %.map: $(OBJECTS)
+%.out %.map: $(OBJECTS) $(LDDESC)
 	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map $(OBJECTS) $(LDFLAGS)
 
 .SECONDARY: $(OBJECTS)

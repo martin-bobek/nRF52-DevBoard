@@ -1,5 +1,6 @@
 #include <nrf.h>
 #include "init.h"
+#include "uarte.h"
 
 extern "C" void RTC0_IRQHandler() __attribute((interrupt));
 
