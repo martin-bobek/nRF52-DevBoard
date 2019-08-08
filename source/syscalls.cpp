@@ -18,7 +18,7 @@ extern "C" caddr_t _sbrk(int incr);
 
 static void ErrorExit(const char str[], size_t len) __attribute((noreturn));
 
-static constexpr char HEAP_OVERFLOW_STR[] = "Error: Heap needs to expand into the stack.\n\r";
+static constexpr char HEAP_OVERFLOW_STR[] = "Error: Heap needs to expand beyond limit.\n\r";
 
 static constexpr size_t BUFFER_SIZE = 100;
 static char buffer[BUFFER_SIZE];
@@ -59,11 +59,12 @@ int _read(int, char *, int) {
 
 caddr_t _sbrk(int incr) {
     extern char __end__;
+    extern char __HeapLimit;
     static char *heap_end = &__end__;
     char *prev_heap_end;
 
     prev_heap_end = heap_end;
-    if (heap_end + incr > (char *)__get_MSP())
+    if (heap_end + incr > &__HeapLimit)
         ErrorExit(HEAP_OVERFLOW_STR, StringLen(HEAP_OVERFLOW_STR));
 
     heap_end += incr;
