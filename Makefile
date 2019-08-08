@@ -2,7 +2,7 @@
 OPT = -O3 -flto
 
 DEFINE = \
-	__HEAP_SIZE=8192 \
+	__HEAP_SIZE=300 \
 	__STACK_SIZE=8192 \
 	NRF52832_XXAA \
 #	NDEBUG \
