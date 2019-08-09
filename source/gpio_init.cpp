@@ -9,6 +9,12 @@ static constexpr uint32_t HIDRV_BOTH =
         GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos  |
         GPIO_PIN_CNF_DRIVE_H0H1       << GPIO_PIN_CNF_DRIVE_Pos |
         GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos;
+static constexpr uint32_t INCON_NOPL =
+        GPIO_PIN_CNF_DIR_Input      << GPIO_PIN_CNF_DIR_Pos   |
+        GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos |
+        GPIO_PIN_CNF_PULL_Disabled  << GPIO_PIN_CNF_PULL_Pos  |
+        GPIO_PIN_CNF_DRIVE_S0S1     << GPIO_PIN_CNF_DRIVE_Pos |
+        GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos;
 static constexpr uint32_t INDSC_NOPL =
         GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos   |
         GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos |
@@ -39,7 +45,7 @@ static constexpr ArrayInit<32, INDSC_PLDWN> GPIO_CNF = {
         { XL2_PIN,  INDSC_NOPL  },
         { RTS_PIN,  INDSC_PLDWN },
         { TXD_PIN,  HIDRV_BOTH  },
-        { CTS_PIN,  INDSC_NOPL  },
+        { CTS_PIN,  INCON_NOPL  },
         { RXD_PIN,  INDSC_NOPL  },
         { LED1_PIN, LED_PIN_CNF },
         { LED2_PIN, LED_PIN_CNF },

@@ -35,15 +35,15 @@ static constexpr uint32_t UARTE_PSEL_TXD =
         TXD_PIN                          << UARTE_PSEL_TXD_PIN_Pos     |
         UARTE_PSEL_TXD_CONNECT_Connected << UARTE_PSEL_TXD_CONNECT_Pos;
 static constexpr uint32_t UARTE_PSEL_CTS =
-        CTS_PIN                             << UARTE_PSEL_CTS_PIN_Pos     |
-        UARTE_PSEL_CTS_CONNECT_Disconnected << UARTE_PSEL_CTS_CONNECT_Pos;
+        CTS_PIN                          << UARTE_PSEL_CTS_PIN_Pos     |
+        UARTE_PSEL_CTS_CONNECT_Connected << UARTE_PSEL_CTS_CONNECT_Pos;
 static constexpr uint32_t UARTE_PSEL_RXD =
         RXD_PIN                             << UARTE_PSEL_RXD_PIN_Pos     |
         UARTE_PSEL_RXD_CONNECT_Disconnected << UARTE_PSEL_RXD_CONNECT_Pos;
 static constexpr uint32_t UARTE_BAUDRATE =
         UARTE_BAUDRATE_BAUDRATE_Baud9600 << UARTE_BAUDRATE_BAUDRATE_Pos;
 static constexpr uint32_t UARTE_CONFIG =
-        UARTE_CONFIG_HWFC_Disabled   << UARTE_CONFIG_HWFC_Pos   |
+        UARTE_CONFIG_HWFC_Enabled    << UARTE_CONFIG_HWFC_Pos   |
         UARTE_CONFIG_PARITY_Excluded << UARTE_CONFIG_PARITY_Pos;
 static constexpr uint32_t UARTE_ENABLE =
         UARTE_ENABLE_ENABLE_Enabled << UARTE_ENABLE_ENABLE_Pos;
