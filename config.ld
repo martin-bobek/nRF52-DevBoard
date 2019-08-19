@@ -45,15 +45,14 @@
  */
 
 
+OUTPUT_FORMAT("elf32-littlearm")
+ENTRY(Reset_Handler)
+
 MEMORY
 {
   FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 0x80000
   RAM  (rwx) : ORIGIN = 0x20000000, LENGTH = 0x10000
 }
-
-OUTPUT_FORMAT ("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
-
-ENTRY(Reset_Handler)
 
 SECTIONS
 {
