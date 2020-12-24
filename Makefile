@@ -1,5 +1,5 @@
 # PROJECT CONFIGURATION
-OPT = -O3 -flto
+OPT = #-O3 -flto
 
 DEFINE = \
 	__HEAP_SIZE=8192 \
@@ -118,7 +118,7 @@ $(HEX): $(OUT)
 	arm-none-eabi-objcopy -O ihex $< $@
 
 %.out %.map: $(OBJECTS) $(LDDESC)
-	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map,--cref $(OBJECTS) $(LDFLAGS)
+	arm-none-eabi-g++ -o $*.out -Wl,-Map=$*.map,--cref,--verbose $(OBJECTS) $(LDFLAGS) -v
 
 .SECONDARY: $(OBJECTS)
 
